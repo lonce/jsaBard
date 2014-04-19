@@ -1,5 +1,4 @@
 
-Need to know the file name (should have drop down slector like jsaSound does
 
 Document "How To"
    shift->Set to store settings
@@ -8,13 +7,22 @@ Document "How To"
 
    In authoring tool, sound file names are too long for the display.
 
-   Need drop-down box for selecting sounds
-   	(This will also save the ungraceful way unfound jsaSound model files are handled)
-   	make it so no need to type .js at the end of file names
 
 Should be able to name scenes for easy recall.
 
 Insert scenes between pre-existing ones.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+Option for Story code to be included in interface application.
+
+"stories" to be stored locally
+
+Interface code to send stories message with API call (like Dispatch in player.js)
+
+Steps:
+   Disentangle Story API from socket code
+   
+
 
 
 

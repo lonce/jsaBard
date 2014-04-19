@@ -127,7 +127,7 @@ define(
 		function initControllerView(storyObj) {
 			hide("connectorContainer");
 			show("app");
-			var newController = fixController(storyObj.controller);
+			var newController = fixController(storyObj.controller);  // gets the "surface" from the data stored with the server on the authored story
 			renderer.renderSurface(newController);
 			renderer.configure("/", 0);
 		}

@@ -40,7 +40,7 @@ define(
 	function (require, makeSliderBox, jsaSoundConfig, $, Story, io) {
 		var story = {};
 
-		var showSliderBoxesP = true;
+		var showSliderBoxesP = false; // automatically set to true if running control->synth over the net
 
 		var soundServer = jsaSoundConfig.resourcesPath;
 
@@ -83,15 +83,18 @@ define(
 			return controllerModel;
 		}
 
-		function initStory (storyObj, storyName) {
-			story = Story(fixController(storyObj.controller));
+		function initStory (storyObj, storyName, useSockets) {
+			story = Story(fixController(storyObj.controller)); // this is the "surface data" that is currently stored with the Story
 			story.setStoryScenes(storyObj.scenes);
 			if (storyObj.scenes.length <= 0) {
 				console.log("This story has no scenes!");
 				return;
 			}
 			numScenes = storyObj.scenes.length;
-			initMessaging(storyName);
+			if (useSockets===true) {
+				initMessaging(storyName);
+				showSliderBoxesP=true;
+			}
 			setScene(0);
 		}
 
@@ -395,16 +398,20 @@ define(
 			});
 		}
 
-		function loadStory() {
+		function loadStoryButton(){
+			loadStory(elem("storyName").value, true);
+		}
+
+		function loadStory(i_storyName, useSockets) {
 			// TODO: (MAYBE) Ensure another story isn't already loaded
-			var storyName = elem("storyName").value;
+			var storyName = i_storyName;
 
 			function goodCb(res) {
 				alert("Story loaded!");
 				console.log("Response: " + JSON.stringify(res));
 				elem("loadStory").setAttribute("disabled", true);
 				elem("storyName").setAttribute("disabled", true);
-				initStory(res, storyName);
+				initStory(res, storyName, useSockets);
 			}
 
 			function badCb() {
@@ -420,6 +427,6 @@ define(
 			}).fail(badCb);
 		}
 
-		elem("loadStory").addEventListener("click", loadStory);
+		elem("loadStory").addEventListener("click", loadStoryButton);
 	}
 );
