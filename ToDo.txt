@@ -12,15 +12,24 @@ Should be able to name scenes for easy recall.
 
 Insert scenes between pre-existing ones.
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-Option for Story code to be included in interface application.
 
-"stories" to be stored locally
 
-Interface code to send stories message with API call (like Dispatch in player.js)
+io.connect("/") ??
 
-Steps:
-   Disentangle Story API from socket code
+require paths have to be set in main.js, but all files use the parths variable. How can I specifiy
+the paths in the files that acutally use them?
+
+Unify message formats from messageSurface on through 
+   messageSurface sends {n: name, d: array[address, number]} and the name is meaningless.
+
+
+fixController issue
+
+load all Story sounds when the story is loaded, and just set references when scenes are changed.
+    this is becuase it takes too long for sounds to load eveytime a scene is changed. 
+
+Check if microphone input is working on mobile devices 
+
    
 
 

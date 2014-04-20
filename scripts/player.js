@@ -9,7 +9,7 @@ You should have received a copy of the GNU General Public License and GNU Lesser
 ------------------------------------------------------------------------------------------*/
 // Kumar Subramanian (http://nishabdam.com) is the Guru responsible for the party node.js architecture!
 // Modified, adapted, and further messed with by:
-//	Lonce Wyse, July 2010
+// Lonce Wyse, July 2010
 // Re-done by Pallav Shinghal (http://pshinghal.com)
 
 require.config({
@@ -30,14 +30,13 @@ require.config({
 				return (host );
 			})(),
 		"jquery": "http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min",
-		//LOCAL "jquery": "http://localhost:8000/scripts/jquery.min",
 		"socketio": "/socket.io/socket.io"
 	}
 });
 
 define(
-	[ "require", "jsaSound/jsaCore/sliderBox", "jsaSound/jsaCore/config", "jquery", "Story", "socketio", "soundPlayerAPI"],
-	function (require, makeSliderBox, jsaSoundConfig, $, Story, io, rigPlayer) {
+	["socketio", "rigPlayerAPI"],
+	function (io, rigPlayer) {
 
 		function elem(id) {
 			return document.getElementById(id);
@@ -118,12 +117,10 @@ define(
 
 		function netcomms_setup(storyName){
 			initMessaging(storyName);
-			showSliderBoxesP=true;
 
+			rigPlayer.showSliderBoxes(true);
 			elem("loadStory").setAttribute("disabled", true);
 			elem("storyName").setAttribute("disabled", true);
-
-			//alert("in cb");
 		}
 
 		function loadStoryButton(){

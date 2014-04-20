@@ -27,15 +27,24 @@ require.config({
 				console.log("Will look surfaces served from " + host);
 				return (host );
 			})(),
-
+		"jsaSound": (function(){
+			if (! window.document.location.hostname){
+				alert("This page cannot be run as a file, but must be served from a server (e.g. animatedsoundworks.com:8001, or localhost:8001)." );
+			}
+				// jsaSound server is hardcoded to port 8001 (on the same server as jsaBard - or from animatedsoundworks)
+				//LOCAL  var host = "http://"+window.document.location.hostname + ":8001";
+				var host = "http://animatedsoundworks.com:8001";
+				console.log("Will look for sounds served from " + host);
+				return (host );
+			})(),
 		//LOCAL "jquery": "http://192.168.43.250:8000/scripts/jquery.min"
 		"jquery": "http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min"
 	}
 });
 
 define(
-	["socketio", "messageSurface/appscripts/renderSurface", "jquery"],
-	function (io, renderer) {
+	["messageSurface/appscripts/renderSurface", "rigPlayerAPI"],
+	function (renderer, rigPlayer) {
 		function elem(id) { return document.getElementById(id); }
 		function hide(id) { elem(id).setAttribute("hidden", true); }
 		function show(id) { elem(id).removeAttribute("hidden"); }
@@ -47,32 +56,17 @@ define(
 			return Math.max(t1, Math.min(raw, t2));
 		}
 
-		var socket;
+
 
 		function init() {
-			socket = io.connect(window.jsaHost);
-			socket.on("connect", initConnectorView);
+			initConnectorView();
 		}
 
-		function loadStory(storyName) {
 
-			function goodCb(res) {
+		function storyLoaded(res, name){
 				console.log("Got Story!");
 				console.log("Response: " + JSON.stringify(res));
-				initControllerView(res);
-			}
-
-			function badCb() {
-				alert("ERROR! Try something else.");
-			}
-
-			$.get("/loadStory", {name: storyName})
-			.done(function (res) {
-				if (res)
-					goodCb(res);
-				else
-					badCb();
-			}).fail(badCb);
+			initControllerView(res);
 		}
 
 		function initConnectorView() {
@@ -80,25 +74,13 @@ define(
 			var partyButton = elem("partyButton");
 
 			function joinParty() {
-				var partyName = partyNameInput.value.toLowerCase().replace(/[^a-z]/g, '');
+				var partyName = partyNameInput.value;
 				disable("partyButton");
 				partyNameInput.value = "loading...";
 				disable("partyName");
 				console.log("Attempting to join " + partyName);
-				socket.on("confirm", function (data) {
-					if (data.party === partyName) {
-						console.log("Joined with story: " + data.story);
-						loadStory(data.story);
-					} else {
-						alert("Couldn't connect!");
-						partyNameInput.value = "";
-						partyNameInput.focus();
-					}
-				});
-				socket.emit("register", {
-					party: partyName,
-					type: "control"
-				});
+
+				rigPlayer.loadStory(partyName, storyLoaded);
 			}
 
 			partyButton.addEventListener("click", joinParty);
@@ -129,7 +111,15 @@ define(
 			show("app");
 			var newController = fixController(storyObj.controller);  // gets the "surface" from the data stored with the server on the authored story
 			renderer.renderSurface(newController);
-			renderer.configure("socket", "/", 0);
+			renderer.configure(messageTarget);
+		}
+
+		function messageTarget(n,d){
+			rigPlayer.dispatch({
+				id: d[0],
+				val: d[1]
+			});
+
 		}
 
 		init();
