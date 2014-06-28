@@ -17,7 +17,8 @@ Insert scenes between pre-existing ones.
 io.connect("/") ??
 
 require paths have to be set in main.js, but all files use the parths variable. How can I specifiy
-the paths in the files that acutally use them?
+the paths in the files that acutally use them? - Can you put a require.config in any module and have it
+only function locally (rather than overwrite the other require.config in the project? Can it include shims? etc....
 
 Unify message formats from messageSurface on through 
    messageSurface sends {n: name, d: array[address, number]} and the name is meaningless.
