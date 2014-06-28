@@ -1,0 +1,25 @@
+{
+  "name": "jsaBard",
+  "version": "0.1.0",
+  "description": "README",
+  "main": "bardServer.js",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.4.5",
+    "socket.io": "^1.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lonce/jsaBard.git"
+  },
+  "author": "Lonce Wyse, Pallav Singhal",
+  "license": "lgpl",
+  "bugs": {
+    "url": "https://github.com/lonce/jsaBard/issues"
+  },
+  "homepage": "https://github.com/lonce/jsaBard"
+}

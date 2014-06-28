@@ -40,13 +40,13 @@ var k_portnum=8000;
 server.listen(process.argv[2] || k_portnum);
 console.log("Connected and listening on port " + k_portnum);
 
-
+var bodyParser =require("body-parser");
 
 var parties = {};
 // A map from party name to a structure with info on
 // the synths and controllers that belong to the party.
 
-app.use(express.bodyParser());
+app.use(bodyParser());
 
 function addStatic(route) {
     console.log("Adding static handler for " + route);
